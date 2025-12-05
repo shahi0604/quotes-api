@@ -1,27 +1,25 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 
+// Middleware to parse JSON (needed for POST requests later)
+app.use(express.json());
+
+// Sample quotes data
 const quotes = [
-  "Believe in yourself!",
-  "Stay positive.",
-  "Work hard, dream big."
+  { id: 1, author: "Albert Einstein", quote: "Life is like riding a bicycle. To keep your balance you must keep moving." },
+  { id: 2, author: "Oscar Wilde", quote: "Be yourself; everyone else is already taken." }
 ];
 
-app.get("/", (req, res) => {
-  res.send("Quotes API is running!");
+// Root route
+app.get('/', (req, res) => {
+  res.send('Quotes API is running!');
 });
 
-app.get("/api/random", (req, res) => {
-  const random = quotes[Math.floor(Math.random() * quotes.length)];
-  res.json({ quote: random });
-});
-
-app.get("/api/all", (req, res) => {
+// Quotes route
+app.get('/quotes', (req, res) => {
   res.json(quotes);
 });
 
-// IMPORTANT: Render requires this
+// Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
