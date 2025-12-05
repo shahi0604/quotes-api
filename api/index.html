@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quotes API Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .quote {
+      background: #fff;
+      padding: 15px;
+      margin: 10px 0;
+      border-left: 4px solid #007BFF;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .author {
+      font-weight: bold;
+      text-align: right;
+      margin-top: 5px;
+    }
+    button {
+      margin: 10px 0;
+      padding: 8px 12px;
+      border: none;
+      background: #007BFF;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quotes API Demo</h1>
+  <button onclick="fetchQuotes()">Load Quotes</button>
+  <div id="quotesContainer"></div>
+
+  <script>
+    const apiBase = 'https://quotes-api-6zd2.onrender.com';
+
+    async function fetchQuotes() {
+      const container = document.getElementById('quotesContainer');
+      container.innerHTML = 'Loading...';
+      try {
+        const response = await fetch(`${apiBase}/quotes`);
+        if (!response.ok) throw new Error('Failed to fetch quotes');
+        const quotes = await response.json();
+        container.innerHTML = '';
+        quotes.forEach(q => {
+          const div = document.createElement('div');
+          div.className = 'quote';
+          div.innerHTML = `<div>"${q.quote}"</div><div class="author">- ${q.author}</div>`;
+          container.appendChild(div);
+        });
+      } catch (err) {
+        container.innerHTML = `<p style="color:red">${err.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
